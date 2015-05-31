@@ -1,35 +1,60 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Spell Vocabulary</title>
-    <link href="http://fonts.googleapis.com/css?family=Trade+Winds" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/main.css">
-  </head>
-  <body>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <h1 class="main-title text-center">Spell Vocabulary</h1>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <form>
-            Username/Email<br>
-            <input type="text" size="40">
-          </form>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <form>
-            Password<br>
-            <input type="password" size="40">
-          </form>
-        </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spell Vocabulary</title>
+  <link href="http://fonts.googleapis.com/css?family=Trade+Winds" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1 class="main-title text-center">Spell Vocabulary</h1>
       </div>
     </div>
-  </body>
+    <div class="row">
+      <div class="col-md-4">
+        <form class="form-horizontal" action="signin.php" method="post">
+          <div class="form-group">
+            <label for="signInEmail" class="control-label">Email address</label><br>
+            <input type="email" class="form-control" name="email" id="signInEmail" placeholder="Email address">
+          </div>
+          <div class="form-group">
+            <label for="signInPassword" class="control-label">Password</label><br>
+            <input type="password" class="form-control" name="password" id="signInPassword" placeholder="Password">
+          </div>
+          <div class="form-group">
+            <div class="checkbox">
+              <label><input type="checkbox" name="checkbox"> Remember me</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-default">Sign In</button>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-6">
+        <h3>Registration</h3>
+        <form class="form-horizontal" action="signup.php" method="post">
+          <div class="form-group">
+            <input type="text" class="form-control" name="firstName" placeholder="First Name">
+            <input type="text" class="form-control" name="lastName" placeholder="Last Name">
+          </div>
+          <div class="form-group">
+            <input type="email" class="form-control" name="email" placeholder="Email address">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" name="password" placeholder="Password">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-default">Sign Up</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
 </html>

@@ -2,6 +2,15 @@ body {
   font: 16px/2.0 Verdana, sans-serif;
 }
 
+input {
+  margin: 10px;
+}
+
+button {
+  margin: 10px;
+  font: 14px/1.5 Verdana, sans-serif;
+}
+
 .main-title {
   font: 48px 'Trade Winds', cursive;
   color: #E9E9E9;
