@@ -8,12 +8,16 @@
   <?php
     require_once 'common.php';
 
+    // Stores sha1 password hash which
+    // is always 40 characters long.
     createTable('users', '
-      email VARCHAR(16),
-      firstName VARCHAR(16),
-      lastName VARCHAR(16),
-      password VARCHAR(16),
-      INDEX(email(6))
+      userId INT(32) NOT NULL AUTO_INCREMENT,
+      email VARCHAR(' . $EMAIL_MAX_LEN . ') NOT NULL,
+      firstName VARCHAR(' . $FIRSTNAME_MAX_LEN . ') NOT NULL,
+      lastName VARCHAR(' . $LASTNAME_MAX_LEN . ') NOT NULL,
+      password VARCHAR(40) NOT NULL,
+      PRIMARY KEY (userId),
+      UNIQUE KEY (email)
     ');
   ?>
   <br>... done!

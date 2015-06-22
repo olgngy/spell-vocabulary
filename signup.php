@@ -2,54 +2,43 @@
 
 require_once 'common.php';
 
-if (!isset($_POST['firstName']) ||
-    !isset($_POST['lastName']) ||
-    !isset($_POST['email']) ||
-    !isset($_POST['password'])) {
-  die('Internal error :(');
-}
+$message = "";
 
-$origFirstName = $_POST['firstName'];
-$origLastName = $_POST['lastName'];
-$origEmail = $_POST['email'];
-$origPassword = $_POST['password'];
+if (!isset($_POST['firstName'], $_POST['lastName'],
+           $_POST['email'], $_POST['password'], $_POST['formToken'])) {
+  $message = 'Please enter a valid username and password';
+} else if ($_POST['formToken'] !== $_SESSION['formToken']) {
+  $message = 'Invalid form submission';
+} else if (strlen($_POST['email']) > $EMAIL_MAX_LEN) {
+  $message = 'Incorrect length for email';
+} else if (strlen($_POST['password']) > $PASSWORD_MAX_LEN ||
+           strlen($_POST['password']) < $PASSWORD_MIN_LEN) {
+  $message = 'Incorrect length for password';
+} else if (strlen($_POST['firstName']) > $FIRSTNAME_MAX_LEN ||
+           strlen($_POST['firstName']) < $FIRSTNAME_MIN_LEN) {
+  $message = 'Incorrect length for first name';
+} else if (strlen($_POST['lastName']) > $LASTNAME_MAX_LEN ||
+           strlen($_POST['lastName']) < $LASTNAME_MIN_LEN) {
+  $message = 'Incorrect length for last name';
+} else if (ctype_alnum($_POST['password']) !== true) {
+  $message = "Password must be alpha numeric";
+} else {
+  $firstName = sanitizeString($_POST['firstName']);
+  $lastName = sanitizeString($_POST['lastName']);
+  $email = sanitizeString($_POST['email']);
+  $password = sha1(sanitizeString($_POST['password']));
 
-$firstName = sanitizeString($origFirstName);
-$lastName = sanitizeString($origLastName);
-$email = sanitizeString($origEmail);
-$password = sanitizeString($origPassword);
-
-$correct = true;
-if ($firstName == "" || $firstName != $origFirstName) {
-  echo '- Invalid first name.<br>';
-  $correct = false;
-}
-if ($lastName == "" || $lastName != $origLastName) {
-  echo '- Invalid last name.<br>';
-  $correct = false;
-}
-if ($email == "" || $email != $origEmail) {
-  echo '- Invalid email.<br>';
-  $correct = false;
-}
-if ($password == "" || $password != $origPassword) {
-  echo '- Invalid password.<br>';
-  $correct = false;
-}
-
-if ($correct) {
   $result = queryMysql("SELECT * FROM users WHERE email='$email'");
-  if ($result->num_rows) {
-    echo '- That username already exists.<br>';
-    $correct = false;
+  if ($result->num_rows !== 0) {
+    $message = 'Email already exists';
+  } else {
+    queryMysql("INSERT INTO users VALUES" .
+      "(NULL, '$email', '$firstName', '$lastName', '$password')");
+    $message = 'New user added';
+    unset($_SESSION['formToken']);
   }
 }
 
-if ($correct) {
-  queryMysql("INSERT INTO users VALUES('$email', '$firstName', '$lastName', '$password')");
-  echo '<h4>Account created</h4>';
-} else {
-  echo 'Please fix above errors to continue.';
-}
+echo $message;
 
 ?>
