@@ -16,6 +16,9 @@ $PASSWORD_MAX_LEN = 40;
 $EMAIL_MAX_LEN = 40;
 
 $connection = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+if ($connection->connect_error) {
+  die($connection->connect_error);
+}
 
 function createTable($name, $columns) {
   queryMysql("CREATE TABLE IF NOT EXISTS $name($columns)");
