@@ -20,8 +20,12 @@ if (!isset($_POST['firstName'], $_POST['lastName'],
 } else if (strlen($_POST['lastName']) > $LASTNAME_MAX_LEN ||
            strlen($_POST['lastName']) < $LASTNAME_MIN_LEN) {
   $message = 'Incorrect length for last name';
+} else if (ctype_alpha($_POST['firstName']) !== true) {
+  $message = "First name must be alphabetic";
+} else if (ctype_alpha($_POST['lastName']) !== true) {
+  $message = "Last name must be alphabetic";
 } else if (ctype_alnum($_POST['password']) !== true) {
-  $message = "Password must be alpha numeric";
+  $message = "Password must be alphanumeric";
 } else {
   $firstName = sanitizeString($_POST['firstName']);
   $lastName = sanitizeString($_POST['lastName']);

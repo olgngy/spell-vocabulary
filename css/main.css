@@ -18,3 +18,7 @@ button {
   background-color: #0FD942;
   margin: 0px;
 }
+
+label.error {
+  color: red;
+}
