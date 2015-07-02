@@ -2,7 +2,7 @@
 
 require_once 'common.php';
 
-if (isset($_SESSION['email'])) {
+if (isset($_SESSION['uid']) || isset($_COOKIE['authToken'])) {
   header("Location: user.php");
   exit();
 }

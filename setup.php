@@ -11,14 +11,24 @@
     // Stores sha1 password hash which
     // is always 40 characters long.
     createTable('users', '
-      userId INT(32) NOT NULL AUTO_INCREMENT,
+      id INT(32) NOT NULL AUTO_INCREMENT,
       email VARCHAR(' . $EMAIL_MAX_LEN . ') NOT NULL,
       firstName VARCHAR(' . $FIRSTNAME_MAX_LEN . ') NOT NULL,
       lastName VARCHAR(' . $LASTNAME_MAX_LEN . ') NOT NULL,
-      password VARCHAR(40) NOT NULL,
-      PRIMARY KEY (userId),
+      password CHAR(40) NOT NULL,
+      PRIMARY KEY (id),
       UNIQUE KEY (email)
     ');
+
+    createTable('auth_tokens', '
+      id INT(32) NOT NULL AUTO_INCREMENT,
+      token CHAR(' . $AUTH_TOKEN_LEN . '),
+      uid INT(32),
+      expires TIMESTAMP,
+      PRIMARY KEY (id),
+      FOREIGN KEY (uid) REFERENCES users(id)
+    ');
+
   ?>
   <br>... done!
 </body>

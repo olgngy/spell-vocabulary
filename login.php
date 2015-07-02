@@ -2,7 +2,7 @@
 
 require_once 'common.php';
 
-if (isset($_SESSION['email'])) {
+if (isset($_SESSION['uid']) || isset($_COOKIE['authToken'])) {
   header("Location: user.php");
   exit();
 }
@@ -27,7 +27,23 @@ if (!isset($_POST['email'], $_POST['password'])) {
   if ($result->num_rows === 0) {
     $message = 'Login Failed';
   } else {
-    $_SESSION['email'] = $email;
+    $row = $result->fetch_array(MYSQLI_ASSOC);
+    $uid = $row['id'];
+    if ($_POST['remember']) {
+      $token = generateAuthToken();
+
+      queryMysql("DELETE FROM auth_tokens WHERE uid='$uid'");
+
+      // Remember for 1 day.
+      $expires = time() + 60*60*24;
+      $expiresStr = date("Y-m-d H:i:s", $expires);
+
+      queryMysql("INSERT INTO auth_tokens VALUES" .
+        "(NULL, '$token', $uid, '$expiresStr')");
+
+      setcookie('authToken', $token, $expires);
+    }
+    $_SESSION['uid'] = $uid;
     header("Location: user.php");
     exit();
   }

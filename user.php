@@ -1,16 +1,12 @@
 <?php
 
 require_once 'common.php';
+require 'auth_check.php';
 
-if (!isset($_SESSION['email'])) {
-  header("Location: index.php");
-  exit();
-}
-
-$email = $_SESSION['email'];
+$uid = $_SESSION['uid'];
 $greetings = "";
 
-$result = queryMysql("SELECT * FROM users WHERE email='$email'");
+$result = queryMysql("SELECT * FROM users WHERE id='$uid'");
 if ($result->num_rows === 1) {
   $row = $result->fetch_array(MYSQLI_ASSOC);
   $firstName = $row['firstName'];
