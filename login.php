@@ -1,6 +1,7 @@
 <?php
 
 require_once 'common.php';
+require_once 'db_utils.php';
 
 if (isset($_SESSION['uid']) || isset($_COOKIE['authToken'])) {
   header("Location: user.php");
@@ -22,31 +23,27 @@ if (!isset($_POST['email'], $_POST['password'])) {
   $email = sanitizeString($_POST['email']);
   $password = sha1(sanitizeString($_POST['password']));
 
-  $result = queryMysql("SELECT * FROM users WHERE " .
-    "email='$email' AND password='$password'");
-  if ($result->num_rows === 0) {
-    $message = 'Login Failed';
-  } else {
-    $row = $result->fetch_array(MYSQLI_ASSOC);
-    $uid = $row['id'];
+  $uid = dbFetchUserIDByEmailPass($email, $password);
+  if ($uid !== null) {
     if ($_POST['remember']) {
       $token = generateAuthToken();
 
-      queryMysql("DELETE FROM auth_tokens WHERE uid='$uid'");
+      dbDeleteAuthDataByUID($uid);
 
       // Remember for 1 day.
       $expires = time() + 60*60*24;
       $expiresStr = date("Y-m-d H:i:s", $expires);
 
-      queryMysql("INSERT INTO auth_tokens VALUES" .
-        "(NULL, '$token', $uid, '$expiresStr')");
+      dbInsertAuthData($token, $uid, $expiresStr);
 
       setcookie('authToken', $token, $expires);
     }
     $_SESSION['uid'] = $uid;
     header("Location: user.php");
     exit();
-  }
+  } else {
+    $message = 'Login Failed';
+  }  
 }
 
 echo $message;

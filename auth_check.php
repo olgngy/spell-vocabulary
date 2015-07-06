@@ -1,6 +1,7 @@
 <?php
 
 require_once 'common.php';
+require_once 'db_utils.php';
 
 $allow = false;
 
@@ -9,14 +10,12 @@ if (isset($_SESSION['uid'])) {
 } else if (isset($_COOKIE['authToken'])) {
   $token = $_COOKIE['authToken'];
 
-  $result = queryMysql("SELECT * FROM auth_tokens WHERE token='$token'");
-  if ($result->num_rows !== 0) {
-    $row = $result->fetch_array(MYSQLI_ASSOC);
-    $uid = $row['uid'];
-    $expires = strtotime($row['expires']);
-
+  $data = dbFetchAuthDataByToken($token);
+  if ($data !== null) {
+    $uid = $data['uid'];
+    $expires = strtotime($data['expires']);
     if (time() > $expires) {
-      queryMysql("DELETE FROM auth_tokens WHERE uid='$uid'");
+      dbDeleteAuthDataByUID($uid);
       setcookie('authToken', '', time() - 60*60);
     } else {
       // Allow user enter the page.

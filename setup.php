@@ -1,3 +1,7 @@
+<?php
+  require_once 'common.php';
+  require_once 'db_utils.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,11 +10,9 @@
 <body>
   <h3>Setting up ...</h3>
   <?php
-    require_once 'common.php';
-
     // Stores sha1 password hash which
     // is always 40 characters long.
-    createTable('users', '
+    mysqlCreateTable('users', '
       id INT(32) NOT NULL AUTO_INCREMENT,
       email VARCHAR(' . $EMAIL_MAX_LEN . ') NOT NULL,
       firstName VARCHAR(' . $FIRSTNAME_MAX_LEN . ') NOT NULL,
@@ -20,7 +22,7 @@
       UNIQUE KEY (email)
     ');
 
-    createTable('auth_tokens', '
+    mysqlCreateTable('auth_tokens', '
       id INT(32) NOT NULL AUTO_INCREMENT,
       token CHAR(' . $AUTH_TOKEN_LEN . '),
       uid INT(32),
@@ -28,7 +30,6 @@
       PRIMARY KEY (id),
       FOREIGN KEY (uid) REFERENCES users(id)
     ');
-
   ?>
   <br>... done!
 </body>

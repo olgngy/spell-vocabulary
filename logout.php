@@ -1,6 +1,7 @@
 <?php
 
 require_once 'common.php';
+require_once 'db_utils.php';
 
 if (isset($_SESSION['uid'])) {
   $uid = $_SESSION['uid'];
@@ -10,7 +11,7 @@ if (isset($_SESSION['uid'])) {
 
   setcookie('authToken', '', time() - 60*60);
 
-  queryMysql("DELETE FROM auth_tokens WHERE uid='$uid'");
+  dbDeleteAuthDataByUID($uid);
 }
 
 header("Location: index.php");

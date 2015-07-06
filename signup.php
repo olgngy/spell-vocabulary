@@ -1,6 +1,7 @@
 <?php
 
 require_once 'common.php';
+require_once 'db_utils.php';
 
 $message = "";
 
@@ -32,12 +33,10 @@ if (!isset($_POST['firstName'], $_POST['lastName'],
   $email = sanitizeString($_POST['email']);
   $password = sha1(sanitizeString($_POST['password']));
 
-  $result = queryMysql("SELECT * FROM users WHERE email='$email'");
-  if ($result->num_rows !== 0) {
+  if (dbFetchUserDataByEmail($email) !== null) {
     $message = 'Email already exists';
   } else {
-    queryMysql("INSERT INTO users VALUES" .
-      "(NULL, '$email', '$firstName', '$lastName', '$password')");
+    dbInsertUserData($email, $firstName, $lastName, $password);
     $message = 'New user added';
     unset($_SESSION['formToken']);
   }

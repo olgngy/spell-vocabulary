@@ -1,20 +1,17 @@
 <?php
 
 require_once 'common.php';
+require_once 'db_utils.php';
 require 'auth_check.php';
 
 $uid = $_SESSION['uid'];
-$greetings = "";
-
-$result = queryMysql("SELECT * FROM users WHERE id='$uid'");
-if ($result->num_rows === 1) {
-  $row = $result->fetch_array(MYSQLI_ASSOC);
-  $firstName = $row['firstName'];
-  $lastName = $row['lastName'];
-  echo "Hello $firstName $lastName!";
-} else {
-  die("Internal error");
+$data = dbFetchUserDataByID($uid);
+if ($data === null) {
+  die('Internal error');
 }
+
+$firstName = $data['firstName'];
+$lastName = $data['lastName'];
 
 ?>
 <!DOCTYPE html>
@@ -23,7 +20,7 @@ if ($result->num_rows === 1) {
   <title>User Page</title>
 </head>
 <body>
-  <h2><?php echo $greetings; ?></h2>
+  <h3><?php echo "Hello $firstName $lastName!"; ?></h3>
   <a href="logout.php">Logout</a>
 </body>
 </html>
