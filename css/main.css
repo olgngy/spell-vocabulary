@@ -11,14 +11,19 @@ button {
   font: 14px/1.5 Verdana, sans-serif;
 }
 
+table.bookList {
+  text-align: center;
+  width: 100%;
+}
+
+table.bookList td {
+  border: 1px solid black;
+}
+
 .main-title {
   font: 48px 'Trade Winds', cursive;
   color: #E9E9E9;
   padding-top: 25px;
   background-color: #0FD942;
   margin: 0px;
-}
-
-label.error {
-  color: red;
 }

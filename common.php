@@ -23,4 +23,8 @@ function generateAuthToken() {
   );
 }
 
+function getUserFilesDirPath($uid) {
+  return 'books' . DIRECTORY_SEPARATOR . $uid . DIRECTORY_SEPARATOR;
+}
+
 ?>

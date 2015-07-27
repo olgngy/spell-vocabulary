@@ -30,7 +30,16 @@
       PRIMARY KEY (id),
       FOREIGN KEY (uid) REFERENCES users(id)
     ');
-  ?>
+
+    mysqlCreateTable('books', '
+      id INT(32) NOT NULL AUTO_INCREMENT,
+      fileName VARCHAR(255) NOT NULL,
+      fileSize INT(32) NOT NULL,
+      uid INT(32),
+      PRIMARY KEY (id),
+      FOREIGN KEY (uid) REFERENCES users(id)
+    ');
+  ?> 
   <br>... done!
 </body>
 </html>

@@ -29,6 +29,15 @@ function mysqlFetchRow($query) {
   return null;
 }
 
+function mysqlFetchTable($query) {
+  $result = mysqlQuery($query);
+  $table = array();
+  for ($i = 0; $i < $result->num_rows; $i++) {
+    $table[] = $result->fetch_array(MYSQLI_ASSOC);
+  }
+  return $table;
+}
+
 function mysqlCreateTable($name, $columns) {
   mysqlQuery("CREATE TABLE IF NOT EXISTS $name($columns)");
   echo "Table '$name' created or already exists. <br>";
@@ -39,31 +48,11 @@ function mysqlCreateTable($name, $columns) {
 // Table 'users': {{{
 
 function dbFetchUserDataByEmail($email) {
-  $row = mysqlFetchRow("SELECT * FROM users WHERE email='$email'");
-  if ($row !== null) {
-    return array(
-      'id' => $row['id'],
-      'email' => $row['email'],
-      'firstName' => $row['firstName'],
-      'lastName' => $row['lastName'],
-      'password' => $row['password']
-    );
-  }
-  return null;
+  return mysqlFetchRow("SELECT * FROM users WHERE email='$email'");
 }
 
 function dbFetchUserDataByID($uid) {
-  $row = mysqlFetchRow("SELECT * FROM users WHERE id='$uid'");
-  if ($row !== null) {
-    return array(
-      'id' => $row['id'],
-      'email' => $row['email'],
-      'firstName' => $row['firstName'],
-      'lastName' => $row['lastName'],
-      'password' => $row['password']
-    );
-  }
-  return null;
+  return mysqlFetchRow("SELECT * FROM users WHERE id='$uid'");
 }
 
 function dbInsertUserData($email, $firstName, $lastName, $password) {
@@ -73,10 +62,7 @@ function dbInsertUserData($email, $firstName, $lastName, $password) {
 
 function dbFetchUserIDByEmailPass($email, $password) {
   $row = mysqlFetchRow("SELECT id FROM users WHERE email='$email' AND password='$password'");
-  if ($row !== null) {
-    return $row['id'];
-  }
-  return null;
+  return $row !== null ? $row['id'] : null;
 }
 
 // }}}
@@ -84,16 +70,7 @@ function dbFetchUserIDByEmailPass($email, $password) {
 // Table 'auth_tokens': {{{
 
 function dbFetchAuthDataByToken($token) {
-  $row = mysqlFetchRow("SELECT * FROM auth_tokens WHERE token='$token'");
-  if ($row !== null) {
-    return array(
-      'id' => $row['id'],
-      'token' => $row['token'],
-      'uid' => $row['uid'],
-      'expires' => $row['expires']
-    );
-  }
-  return null;
+  return mysqlFetchRow("SELECT * FROM auth_tokens WHERE token='$token'");
 }
 
 function dbInsertAuthData($token, $uid, $expires) {
@@ -105,5 +82,26 @@ function dbDeleteAuthDataByUID($uid) {
 }
 
 // }}}
+
+/// Table 'books': {{{
+
+function dbInsertBookData($fileName, $fileSize, $uid) {
+  mysqlQuery("INSERT INTO books VALUES(NULL, '$fileName','$fileSize', '$uid')");
+}
+
+function dbFetchAllBooksDataByUID($uid) {
+  return mysqlFetchTable("SELECT * FROM books WHERE uid='$uid'");
+}
+
+function dbFetchBookFileNameByID($id) {
+  $row = mysqlFetchRow("SELECT fileName FROM books WHERE id='$id'"); 
+  return $row !== null ? $row['fileName'] : null;
+}
+
+function dbDeleteBookDataByID($id) {
+  mysqlQuery("DELETE FROM books WHERE id='$id'");
+}
+
+///}}}
 
 ?>
