@@ -52,7 +52,7 @@ $(document).ready(function() {
         email: true,
         maxlength: EMAIL_MAX_LEN,
         remote: {
-          url: 'is_email_available.php',
+          url: 'php_async/is_email_available.php',
           type: "post",
           data: {
             email: function() {

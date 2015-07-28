@@ -1,6 +1,7 @@
 <?php
 
-require_once 'common.php';
+require_once '_root_.php';
+require_once _ROOT_.'/php_utils/common.php';
 
 if (isset($_SESSION['uid']) || isset($_COOKIE['authToken'])) {
   header("Location: user.php");

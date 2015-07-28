@@ -1,5 +1,7 @@
 <?php
 
+require_once '_root_.php';
+
 session_start();
 
 $FIRSTNAME_MIN_LEN = 1;
@@ -24,7 +26,7 @@ function generateAuthToken() {
 }
 
 function getUserFilesDirPath($uid) {
-  return 'books' . DIRECTORY_SEPARATOR . $uid . DIRECTORY_SEPARATOR;
+  return _ROOT_ . '/books/' . $uid . '/';
 }
 
 ?>

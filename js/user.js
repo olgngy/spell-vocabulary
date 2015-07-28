@@ -2,7 +2,7 @@ $(document).ready(function() {
 
   function updateBookList() {
     $.ajax({
-      url: "print_book_list.php",
+      url: "php_async/print_book_list.php",
       type: "GET",
       success: function(data) {
         $("#bookList").empty().append(data);
@@ -18,7 +18,7 @@ $(document).ready(function() {
     event.preventDefault();
     var formData = new FormData(document.getElementById("formUploadFile"));
     $.ajax({
-      url: "upload_file.php",
+      url: "php_async/upload_file.php",
       type: "POST",
       dataType: "text",
       data: formData,
@@ -40,7 +40,7 @@ $(document).ready(function() {
     if (proceed) {
       var bookID = $(this).parent().parent().next(".hiddenBookID").val();
       $.ajax({
-        url: "delete_file.php",
+        url: "php_async/delete_file.php",
         type: "POST",
         dataType: "text",
         data: {

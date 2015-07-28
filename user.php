@@ -1,8 +1,9 @@
 <?php
 
-require_once 'common.php';
-require_once 'db_utils.php';
-require 'auth_check.php';
+require_once '_root_.php';
+require_once _ROOT_.'/php_utils/common.php';
+require_once _ROOT_.'/php_utils/db_utils.php';
+require _ROOT_.'/php_utils/auth_check.php';
 
 $uid = $_SESSION['uid'];
 $data = dbFetchUserDataByID($uid);
@@ -44,7 +45,7 @@ $lastName = $data['lastName'];
       <div class="col-md-8">
         <h4 class="text-center">Your books</h4>
         <div id="bookList">
-          <?php require 'print_book_list.php'; ?>
+          <?php require _ROOT_.'/php_async/print_book_list.php'; ?>
         </div>
       </div>
       <div class="col-md-4">

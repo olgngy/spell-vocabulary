@@ -1,6 +1,7 @@
 <?php
-  require_once 'common.php';
-  require_once 'db_utils.php';
+  require_once '_root_.php';
+  require_once _ROOT_.'/php_utils/common.php';
+  require_once _ROOT_.'/php_utils/db_utils.php';
 ?>
 <!DOCTYPE html>
 <html>
